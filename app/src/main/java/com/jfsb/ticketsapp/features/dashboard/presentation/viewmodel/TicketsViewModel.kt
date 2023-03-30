@@ -136,9 +136,9 @@ class TicketsViewModel @Inject constructor(
 
     fun clearTicketData(){
         _actualTicket.value = TicketModel()
-        _selectedTeam.value = 4
-        _selectedPriority.value = 4
-        _selectedType.value = 4
+        _selectedTeam.value = 0
+        _selectedPriority.value = 0
+        _selectedType.value = 0
         _title.value = ""
         _author.value = ""
         _description.value = ""

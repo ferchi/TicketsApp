@@ -95,7 +95,6 @@ fun FiledTicketsScreen(
                                 ticketsViewModel.setShowInfoDialog(true)
                             },
                             isFiled = true,
-                            navController = navController,
                             onLongPressed = {
                                 ticketsViewModel.setActualTicket((state.data)[index])
                                 navController.navigate(Routes.FormTicket.route)

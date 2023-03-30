@@ -29,9 +29,9 @@ fun CreateTicketScreen(
     utils: Utils
 ) {
     val ticket: TicketModel by ticketsViewModel.actualTicket.observeAsState(TicketModel())
-    val selectedPriority: Int by ticketsViewModel.selectedPriority.observeAsState(4)
-    val selectedType: Int by ticketsViewModel.selectedType.observeAsState(4)
-    val selectedTeam: Int by ticketsViewModel.selectedTeam.observeAsState(4)
+    val selectedPriority: Int by ticketsViewModel.selectedPriority.observeAsState(0)
+    val selectedType: Int by ticketsViewModel.selectedType.observeAsState(0)
+    val selectedTeam: Int by ticketsViewModel.selectedTeam.observeAsState(0)
 
     val title: String by ticketsViewModel.title.observeAsState("")
     val author: String by ticketsViewModel.author.observeAsState("")
@@ -127,7 +127,7 @@ fun CreateTicketScreen(
                                 date = Date(),
                                 description = description,
                                 priority = selectedPriority + 1,
-                                status = ticket.status,
+                                status = 1,
                                 team =  selectedTeam + 1 ,
                                 title = title,
                                 type =  selectedType + 1,

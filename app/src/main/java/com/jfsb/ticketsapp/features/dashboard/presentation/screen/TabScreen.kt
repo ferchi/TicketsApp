@@ -90,10 +90,15 @@ fun TabScreen(
                                 ticketsViewModel.setActualTicket((state.data)[index])
                                 ticketsViewModel.setShowFileDialog(true)
                             },
-                            navController = navController,
                             onLongPressed = {
                                 ticketsViewModel.setActualTicket((state.data)[index])
                                 navController.navigate(Routes.FormTicket.route)
+                            },
+                            onNextStatus = {
+                                ticketsViewModel.updateTicket((state.data)[index].copy(status = (state.data)[index].status!! + 1))
+                            },
+                            onPreviousStatus = {
+                                ticketsViewModel.updateTicket((state.data)[index].copy(status = (state.data)[index].status!! - 1))
                             }
                         )
                     }

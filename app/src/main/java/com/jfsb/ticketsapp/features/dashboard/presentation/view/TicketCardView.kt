@@ -4,6 +4,8 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -31,7 +33,8 @@ fun TicketCardView(
     restoreOnClick: () -> Unit = {},
     isFiled: Boolean = false,
     onLongPressed: () -> Unit = {},
-    navController: NavHostController
+    onNextStatus: () -> Unit = {},
+    onPreviousStatus: () -> Unit = {},
 ) {
     Card(
         modifier = Modifier
@@ -57,31 +60,57 @@ fun TicketCardView(
                         Icon(
                             Icons.Filled.Clear,
                             contentDescription = "File",
-                            tint = Color.White
+                            tint = Color.Black
                         )
                     }
-                }
-                else{
+                } else {
                     IconButton(onClick = restoreOnClick, modifier = Modifier.size(24.dp)) {
                         Icon(
                             Icons.Filled.AddCircle,
                             contentDescription = "Restore",
-                            tint = Color.White
+                            tint = Color.Black
                         )
                     }
                 }
             }
-            Text(
-                text = ticket.title!!,
-                style = MaterialTheme.typography.titleMedium.copy(
-                    textAlign = TextAlign.Center
-                ),
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .fillMaxWidth()
-            )
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                if (!isFiled)
+                    IconButton(onClick = {
+                        if (ticket.status != 1) {
+                            onPreviousStatus()
+                        }
+                    }, modifier = Modifier.size(24.dp)) {
+                        Icon(
+                            Icons.Filled.ArrowBack,
+                            contentDescription = "File",
+                            tint = if (ticket.status == 1) Color.White else Color.Black
+                        )
+                    }
+                Text(
+                    text = ticket.title!!,
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        textAlign = TextAlign.Center
+                    ),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    modifier = if (isFiled) Modifier
+                        .fillMaxWidth()
+                        .padding(end = 8.dp)
+                    else Modifier.padding(end = 8.dp)
+                )
+                if (!isFiled)
+                    IconButton(onClick = {
+                        if (ticket.status != 3) {
+                            onNextStatus()
+                        }
+                    }, modifier = Modifier.size(24.dp)) {
+                        Icon(
+                            Icons.Filled.ArrowForward,
+                            contentDescription = "File",
+                            tint = if (ticket.status == 3) Color.White else Color.Black
+                        )
+                    }
+            }
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -111,7 +140,6 @@ private fun PreviewTicketCardView() {
     )
     TicketCardView(
         ticket = ticket,
-        utils = Utils(),
-        navController = rememberNavController()
+        utils = Utils()
     )
 }
