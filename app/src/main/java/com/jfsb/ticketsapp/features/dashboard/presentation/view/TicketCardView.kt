@@ -3,6 +3,7 @@ package com.jfsb.ticketsapp.features.dashboard.presentation.view
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ fun TicketCardView(
     utils: Utils,
     onClick: () -> Unit = {},
     deleteOnClick: () -> Unit = {},
+    restoreOnClick: () -> Unit = {},
     isFiled: Boolean = false,
     onLongPressed: () -> Unit = {},
     navController: NavHostController
@@ -55,6 +57,15 @@ fun TicketCardView(
                         Icon(
                             Icons.Filled.Clear,
                             contentDescription = "File",
+                            tint = Color.White
+                        )
+                    }
+                }
+                else{
+                    IconButton(onClick = restoreOnClick, modifier = Modifier.size(24.dp)) {
+                        Icon(
+                            Icons.Filled.AddCircle,
+                            contentDescription = "Restore",
                             tint = Color.White
                         )
                     }

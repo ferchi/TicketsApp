@@ -22,6 +22,7 @@ import com.jfsb.ticketsapp.core.utils.Utils
 import com.jfsb.ticketsapp.features.dashboard.data.datasource.TicketModel
 import com.jfsb.ticketsapp.features.dashboard.presentation.view.DetailsDialog
 import com.jfsb.ticketsapp.features.dashboard.presentation.view.FileTicketDialog
+import com.jfsb.ticketsapp.features.dashboard.presentation.view.RestoreTicketDialog
 import com.jfsb.ticketsapp.features.dashboard.presentation.view.TicketCardView
 
 
@@ -35,6 +36,7 @@ fun FiledTicketsScreen(
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val showInfoDialog: Boolean by ticketsViewModel.showInfoDialog.observeAsState(initial = false)
+    val showFileDialog: Boolean by ticketsViewModel.showFileDialog.observeAsState(initial = false)
     val actualTicket: TicketModel by ticketsViewModel.actualTicket.observeAsState(initial = TicketModel())
 
 
@@ -45,6 +47,16 @@ fun FiledTicketsScreen(
             setShowDialog = {
                 ticketsViewModel.setShowInfoDialog(it)
             })
+    if(showFileDialog)
+    RestoreTicketDialog(
+        ticket = actualTicket,
+        setShowDialog = {
+            ticketsViewModel.setShowFileDialog(it)
+        },
+        onClick = {
+            ticketsViewModel.updateTicket(it)
+        }
+    )
 
     Column(
         modifier = Modifier
@@ -87,7 +99,11 @@ fun FiledTicketsScreen(
                             onLongPressed = {
                                 ticketsViewModel.setActualTicket((state.data)[index])
                                 navController.navigate(Routes.FormTicket.route)
-                            }
+                            },
+                            restoreOnClick = {
+                                ticketsViewModel.setActualTicket((state.data)[index])
+                                ticketsViewModel.setShowFileDialog(true)
+                            },
                         )
                     }
                 }
