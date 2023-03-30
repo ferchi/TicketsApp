@@ -114,24 +114,35 @@ class TicketsViewModel @Inject constructor(
 
     fun setSelectedTeam(position: String) {
         teamsList.indexOf(position).let {
-            _selectedTeam.value = it
+            _selectedTeam.value = if (it == -1) 0 else it
         }
     }
 
     fun setSelectedPriority(position: String) {
         priorityList.indexOf(position).let {
-            _selectedPriority.value = it
+            _selectedPriority.value = if (it == -1) 0 else it
         }
     }
 
     fun setSelectedType(position: String) {
         typeList.indexOf(position).let {
-            _selectedType.value = it
+            _selectedType.value = if (it == -1) 0 else it
         }
     }
 
     fun setActualTicket(ticket: TicketModel) {
         _actualTicket.value = ticket
+    }
+
+    fun clearTicketData(){
+        _actualTicket.value = TicketModel()
+        _selectedTeam.value = 4
+        _selectedPriority.value = 4
+        _selectedType.value = 4
+        _title.value = ""
+        _author.value = ""
+        _description.value = ""
+        _version.value = 0.0
     }
 
     fun getTicketsList(status: Int) {
@@ -150,7 +161,8 @@ class TicketsViewModel @Inject constructor(
         }
     }
 
-    fun fileTicket(ticket: TicketModel) {
+
+    fun updateTicket(ticket: TicketModel) {
         viewModelScope.launch {
             updateTicketUseCase.invoke(ticket).collect { response ->
                 _isTicketUpdatedState.value = response

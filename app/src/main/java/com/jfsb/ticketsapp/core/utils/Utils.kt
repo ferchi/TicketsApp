@@ -7,7 +7,7 @@ class Utils @Inject constructor() {
         return when (team){
             1 -> "SOPORTE"
             2 -> "DESARROLLO"
-            3 -> "ATENCION A CLIENTES"
+            3 -> "ATENCIÓN A CLIENTES"
             else -> "DEFAULT"
         }
     }

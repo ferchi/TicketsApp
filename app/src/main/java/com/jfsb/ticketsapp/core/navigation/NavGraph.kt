@@ -1,11 +1,9 @@
 package com.jfsb.ticketsapp.core.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.InternalComposeApi
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.jfsb.ticketsapp.core.utils.Utils
 import com.jfsb.ticketsapp.features.dashboard.presentation.screen.CreateTicketScreen
 import com.jfsb.ticketsapp.features.dashboard.presentation.screen.DashboardScreen
@@ -36,9 +34,10 @@ fun NavGraph(
                 navController = navHostController
             )
         }
-        composable(Routes.Create.route) {
+        composable(Routes.FormTicket.route) {
             CreateTicketScreen(
-                ticketsViewModel = ticketsViewModel
+                ticketsViewModel = ticketsViewModel,
+                utils = utils,
             )
         }
     }

@@ -1,18 +1,21 @@
 package com.jfsb.ticketsapp.features.dashboard.presentation.view
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.jfsb.ticketsapp.core.navigation.Routes
 import com.jfsb.ticketsapp.core.utils.Utils
 import com.jfsb.ticketsapp.features.dashboard.data.datasource.TicketModel
 
@@ -24,14 +27,21 @@ fun TicketCardView(
     utils: Utils,
     onClick: () -> Unit = {},
     deleteOnClick: () -> Unit = {},
-    isFiled: Boolean = false
+    isFiled: Boolean = false,
+    onLongPressed: () -> Unit = {},
+    navController: NavHostController
 ) {
     Card(
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth()
             .height(110.dp)
-            .clickable { onClick() },
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = { onLongPressed() },
+                    onTap = { onClick() }
+                )
+            },
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
     ) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.SpaceEvenly) {
@@ -90,6 +100,7 @@ private fun PreviewTicketCardView() {
     )
     TicketCardView(
         ticket = ticket,
-        utils = Utils()
+        utils = Utils(),
+        navController = rememberNavController()
     )
 }

@@ -83,7 +83,7 @@ fun DetailsDialog(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "Equipo: ${utils.getPriorityName(ticket.team!!)}",
+                        text = "Equipo: ${utils.getTeamName(ticket.team!!)}",
                         style = MaterialTheme.typography.bodySmall
                     )
                     Text(

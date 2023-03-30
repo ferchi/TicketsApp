@@ -1,5 +1,6 @@
 package com.jfsb.ticketsapp.features.dashboard.presentation.screen
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +18,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.jfsb.ticketsapp.core.utils.Utils
 import com.jfsb.ticketsapp.features.dashboard.data.datasource.TicketModel
 import com.jfsb.ticketsapp.features.dashboard.presentation.viewmodel.TicketsViewModel
 import java.util.*
@@ -24,10 +26,12 @@ import java.util.*
 @Composable
 fun CreateTicketScreen(
     ticketsViewModel: TicketsViewModel,
+    utils: Utils
 ) {
-    val selectedPriority: Int by ticketsViewModel.selectedPriority.observeAsState(0)
-    val selectedType: Int by ticketsViewModel.selectedType.observeAsState(0)
-    val selectedTeam: Int by ticketsViewModel.selectedTeam.observeAsState(0)
+    val ticket: TicketModel by ticketsViewModel.actualTicket.observeAsState(TicketModel())
+    val selectedPriority: Int by ticketsViewModel.selectedPriority.observeAsState(4)
+    val selectedType: Int by ticketsViewModel.selectedType.observeAsState(4)
+    val selectedTeam: Int by ticketsViewModel.selectedTeam.observeAsState(4)
 
     val title: String by ticketsViewModel.title.observeAsState("")
     val author: String by ticketsViewModel.author.observeAsState("")
@@ -38,6 +42,17 @@ fun CreateTicketScreen(
 
     val context = LocalContext.current
 
+    LaunchedEffect(key1 = ticket) {
+        if (ticket.id != null) {
+            ticketsViewModel.setTitle(ticket.title!!)
+            ticketsViewModel.setAuthor(ticket.author!!)
+            ticketsViewModel.setDescription(ticket.description ?: "")
+            ticketsViewModel.setSelectedPriority(utils.getPriorityName(ticket.priority ?: 4))
+            ticketsViewModel.setSelectedType(utils.getTypeName(ticket.type ?: 4))
+            ticketsViewModel.setSelectedTeam(utils.getTeamName(ticket.team ?: 4))
+            ticketsViewModel.setVersion(ticket.version ?: 0.0)
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -104,23 +119,42 @@ fun CreateTicketScreen(
         Button(
             onClick = {
                 if (ticketsViewModel.isValidateForm()) {
-                    ticketsViewModel.createTicket(
-                        TicketModel(
-                            added = Date(),
-                            author = author,
-                            date = Date(),
-                            description = description,
-                            priority = selectedPriority,
-                            status = 1,
-                            team = selectedTeam,
-                            title = title,
-                            type = selectedType,
-                            version = version
+                    if(ticket.id == null){
+                        ticketsViewModel.createTicket(
+                            TicketModel(
+                                added = Date(),
+                                author = author,
+                                date = Date(),
+                                description = description,
+                                priority = selectedPriority + 1,
+                                status = ticket.status,
+                                team =  selectedTeam + 1 ,
+                                title = title,
+                                type =  selectedType + 1,
+                                version = version
+                            )
                         )
-                    )
+                    }
+                    else {
+                        ticketsViewModel.updateTicket(
+                            TicketModel(
+                                id = ticket.id,
+                                added = ticket.added,
+                                author = author,
+                                date = ticket.date,
+                                description = description,
+                                priority = selectedPriority + 1 ,
+                                status = ticket.status,
+                                team =  selectedTeam + 1 ,
+                                title = title,
+                                type = selectedType + 1 ,
+                                version = version
+                            )
+                        )
+                    }
                     Toast.makeText(
                         context,
-                        "Ticket creado correctamente",
+                        "Ticket cargado correctamente",
                         Toast.LENGTH_LONG
                     ).show()
                 } else {
@@ -135,7 +169,7 @@ fun CreateTicketScreen(
                 .fillMaxWidth()
                 .padding(top = 16.dp)
         ) {
-            Text(text = "Crear ticket", color = Color.White)
+            Text(text = "Cargar Ticket", color = Color.White)
         }
     }
 }

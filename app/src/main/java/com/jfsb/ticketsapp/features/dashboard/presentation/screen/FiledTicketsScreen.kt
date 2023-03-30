@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.jfsb.ticketsapp.core.navigation.Routes
 import com.jfsb.ticketsapp.features.dashboard.presentation.viewmodel.TicketsViewModel
 import com.jfsb.ticketsapp.core.network.models.Result
 import com.jfsb.ticketsapp.core.utils.Utils
@@ -81,7 +82,12 @@ fun FiledTicketsScreen(
                                 ticketsViewModel.setActualTicket((state.data)[index])
                                 ticketsViewModel.setShowInfoDialog(true)
                             },
-                            isFiled = true
+                            isFiled = true,
+                            navController = navController,
+                            onLongPressed = {
+                                ticketsViewModel.setActualTicket((state.data)[index])
+                                navController.navigate(Routes.FormTicket.route)
+                            }
                         )
                     }
                 }

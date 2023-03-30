@@ -24,6 +24,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.pager.*
 import com.jfsb.ticketsapp.core.navigation.Routes
 import com.jfsb.ticketsapp.core.utils.Utils
+import com.jfsb.ticketsapp.features.dashboard.data.datasource.TicketModel
 import com.jfsb.ticketsapp.features.dashboard.presentation.viewmodel.TicketsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -71,7 +72,8 @@ fun DashboardScreen(
                         )
                     }
                     IconButton(onClick = {
-                        navController.navigate(Routes.Create.route)
+                        ticketsViewModel.clearTicketData()
+                        navController.navigate(Routes.FormTicket.route)
                     }) {
                         Icon(
                             Icons.Default.Add,
