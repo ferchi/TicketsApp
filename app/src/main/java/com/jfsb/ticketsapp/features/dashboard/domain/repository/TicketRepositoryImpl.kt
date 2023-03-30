@@ -11,10 +11,25 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import com.jfsb.ticketsapp.core.network.models.Result
 import com.jfsb.ticketsapp.core.utils.Constants.ADDED
+import com.jfsb.ticketsapp.core.utils.Utils
+import java.util.*
 
 @ExperimentalCoroutinesApi
-class TicketRepositoryImpl @Inject constructor(private val ticketRef: CollectionReference) :
+class TicketRepositoryImpl @Inject constructor(
+    private val ticketRef: CollectionReference,
+    private val utils: Utils
+) :
     TicketRepository {
+    private suspend fun generateCustomId(team: Int): String {
+        val teamPrefix = utils.getTeamName(team).take(3).uppercase(Locale.ROOT)
+        val numTickets = getnNumTicket(team)
+        return "$teamPrefix-$numTickets"
+    }
+
+    private suspend fun getnNumTicket(team: Int): Int {
+        val querySnapshot = ticketRef.whereEqualTo("team", team).get().await()
+        return querySnapshot.size()
+    }
 
     override suspend fun getTicketByStatus(status: Int) = callbackFlow {
         val snapshotListener = ticketRef.orderBy(ADDED).whereEqualTo("status", status)
@@ -35,7 +50,7 @@ class TicketRepositoryImpl @Inject constructor(private val ticketRef: Collection
     override suspend fun createTicket(ticketAux: TicketModel) = flow {
         try {
             emit(Result.Loading)
-            val ticketId = ticketRef.document().id
+            val ticketId = generateCustomId(ticketAux.team!!)
             val ticket = ticketAux.copy(id = ticketId)
             val addition = ticketRef.document(ticketId).set(ticket).await()
             emit(Result.Success(addition))

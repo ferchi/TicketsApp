@@ -10,6 +10,7 @@ data class TicketModel(
     var date:Date? = null,
     var description:String? = null,
     var files: List<String>? = null,
+    var priority: Int? = null,
     var status:String? = null,
     var team:Int? = null,
     var title:String? = null,

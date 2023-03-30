@@ -5,6 +5,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jfsb.ticketsapp.core.utils.Constants.TICKETS
 import com.jfsb.ticketsapp.core.utils.Constants.USERS
+import com.jfsb.ticketsapp.core.utils.Utils
 import com.jfsb.ticketsapp.features.dashboard.data.repository.TicketRepository
 import com.jfsb.ticketsapp.features.dashboard.domain.repository.TicketRepositoryImpl
 import dagger.Module
@@ -24,5 +25,5 @@ object RemoteModule {
     @Provides
     fun provideTicketRepository(
         ticketsRef: CollectionReference
-    ): TicketRepository = TicketRepositoryImpl(ticketsRef)
+    ): TicketRepository = TicketRepositoryImpl(ticketsRef, utils = Utils())
 }
