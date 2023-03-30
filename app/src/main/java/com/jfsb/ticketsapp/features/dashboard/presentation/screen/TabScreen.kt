@@ -22,6 +22,7 @@ import com.jfsb.ticketsapp.features.dashboard.data.datasource.TicketModel
 import com.jfsb.ticketsapp.features.dashboard.presentation.view.DetailsDialog
 import com.jfsb.ticketsapp.features.dashboard.presentation.view.FileTicketDialog
 import com.jfsb.ticketsapp.features.dashboard.presentation.view.TicketCardView
+import java.util.*
 
 
 @Composable
@@ -95,10 +96,16 @@ fun TabScreen(
                                 navController.navigate(Routes.FormTicket.route)
                             },
                             onNextStatus = {
-                                ticketsViewModel.updateTicket((state.data)[index].copy(status = (state.data)[index].status!! + 1))
+                                ticketsViewModel.updateTicket((state.data)[index].copy(
+                                    status = (state.data)[index].status!! + 1,
+                                added = Date()
+                                ))
                             },
                             onPreviousStatus = {
-                                ticketsViewModel.updateTicket((state.data)[index].copy(status = (state.data)[index].status!! - 1))
+                                ticketsViewModel.updateTicket((state.data)[index].copy(
+                                    status = (state.data)[index].status!! - 1,
+                                    added = Date()
+                                ))
                             }
                         )
                     }

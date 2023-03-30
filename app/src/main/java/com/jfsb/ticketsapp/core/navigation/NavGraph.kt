@@ -9,16 +9,19 @@ import com.jfsb.ticketsapp.features.dashboard.presentation.screen.CreateTicketSc
 import com.jfsb.ticketsapp.features.dashboard.presentation.screen.DashboardScreen
 import com.jfsb.ticketsapp.features.dashboard.presentation.screen.FiledTicketsScreen
 import com.jfsb.ticketsapp.features.dashboard.presentation.viewmodel.TicketsViewModel
+import com.jfsb.ticketsapp.features.session.presentation.screen.LoginScreen
+import com.jfsb.ticketsapp.features.session.presentation.viewmodel.SessionViewModel
 
 @Composable
 fun NavGraph(
     navHostController: NavHostController,
     ticketsViewModel: TicketsViewModel,
+    sessionViewModel: SessionViewModel,
     utils: Utils
 ) {
     NavHost(
         navController = navHostController,
-        startDestination = Routes.Dashboard.route
+        startDestination = Routes.Login.route
     ) {
         composable(Routes.Dashboard.route) {
             DashboardScreen(
@@ -38,6 +41,12 @@ fun NavGraph(
             CreateTicketScreen(
                 ticketsViewModel = ticketsViewModel,
                 utils = utils,
+            )
+        }
+        composable(Routes.Login.route) {
+            LoginScreen(
+                sessionViewModel = sessionViewModel,
+                navController = navHostController
             )
         }
     }

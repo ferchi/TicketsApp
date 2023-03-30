@@ -73,7 +73,22 @@ fun TicketCardView(
                     }
                 }
             }
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(
+                text = ticket.title!!,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    textAlign = TextAlign.Center
+                ),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 8.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 if (!isFiled)
                     IconButton(onClick = {
                         if (ticket.status != 1) {
@@ -87,16 +102,12 @@ fun TicketCardView(
                         )
                     }
                 Text(
-                    text = ticket.title!!,
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        textAlign = TextAlign.Center
-                    ),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                    modifier = if (isFiled) Modifier
-                        .fillMaxWidth()
-                        .padding(end = 8.dp)
-                    else Modifier.padding(end = 8.dp)
+                    text = "Tipo: ${utils.getTypeName(ticket.type!!)}",
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Text(
+                    text = "Prioridad: ${utils.getPriorityName(ticket.priority!!)}",
+                    style = MaterialTheme.typography.bodySmall
                 )
                 if (!isFiled)
                     IconButton(onClick = {
@@ -110,20 +121,6 @@ fun TicketCardView(
                             tint = if (ticket.status == 3) Color.White else Color.Black
                         )
                     }
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = "Tipo: ${utils.getTypeName(ticket.type!!)}",
-                    style = MaterialTheme.typography.bodySmall
-                )
-                Text(
-                    text = "Prioridad: ${utils.getPriorityName(ticket.priority!!)}",
-                    style = MaterialTheme.typography.bodySmall
-                )
             }
         }
     }

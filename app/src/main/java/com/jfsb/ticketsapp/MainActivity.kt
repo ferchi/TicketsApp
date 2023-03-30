@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.jfsb.ticketsapp.core.navigation.NavGraph
 import com.jfsb.ticketsapp.core.utils.Utils
 import com.jfsb.ticketsapp.features.dashboard.presentation.viewmodel.TicketsViewModel
+import com.jfsb.ticketsapp.features.session.presentation.viewmodel.SessionViewModel
 import com.jfsb.ticketsapp.ui.theme.TicketsAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,10 +32,12 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
                     val ticketsViewModel: TicketsViewModel by viewModels()
+                    val sessionViewModel: SessionViewModel by viewModels()
 
                     NavGraph(
                         navHostController = navController,
                         ticketsViewModel = ticketsViewModel,
+                        sessionViewModel = sessionViewModel,
                         utils = Utils()
                     )
 
