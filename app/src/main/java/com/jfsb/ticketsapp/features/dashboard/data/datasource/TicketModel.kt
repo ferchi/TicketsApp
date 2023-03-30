@@ -11,7 +11,7 @@ data class TicketModel(
     var description:String? = null,
     var files: List<String>? = null,
     var priority: Int? = null,
-    var status:String? = null,
+    var status:Int? = null,
     var team:Int? = null,
     var title:String? = null,
     var type:Int? = null,

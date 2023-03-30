@@ -19,8 +19,8 @@ object RemoteModule {
     @Provides
     fun provideTicketsRef() = Firebase.firestore.collection(TICKETS)
 
-    @Provides
-    fun provideUsersRef() = Firebase.firestore.collection(USERS)
+//    @Provides
+//    fun provideUsersRef() = Firebase.firestore.collection(USERS)
 
     @Provides
     fun provideTicketRepository(
