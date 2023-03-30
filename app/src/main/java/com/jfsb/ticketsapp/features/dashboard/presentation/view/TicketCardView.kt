@@ -17,7 +17,7 @@ import com.jfsb.ticketsapp.features.dashboard.data.datasource.TicketModel
 fun TicketCardView(
     modifier: Modifier = Modifier,
     ticket: TicketModel,
-    utils: Utils, 
+    utils: Utils,
     onClick: () -> Unit = {}
 ) {
     Card(
@@ -29,7 +29,10 @@ fun TicketCardView(
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
     ) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.SpaceEvenly) {
-            Text(text = ticket.id!!)
+            Text(
+                text = ticket.id!!,
+                style = MaterialTheme.typography.bodySmall
+            )
             Text(
                 text = ticket.title!!,
                 style = MaterialTheme.typography.titleMedium.copy(
@@ -46,8 +49,14 @@ fun TicketCardView(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Tipo: ${utils.getTypeName(ticket.type!!)}")
-                Text(text = "Prioridad: ${utils.getPriorityName(ticket.priority!!)}")
+                Text(
+                    text = "Tipo: ${utils.getTypeName(ticket.type!!)}",
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Text(
+                    text = "Prioridad: ${utils.getPriorityName(ticket.priority!!)}",
+                    style = MaterialTheme.typography.bodySmall
+                )
             }
         }
     }

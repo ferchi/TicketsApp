@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.jfsb.ticketsapp.core.utils.Utils
+import com.jfsb.ticketsapp.features.dashboard.presentation.screen.CreateTicketScreen
 import com.jfsb.ticketsapp.features.dashboard.presentation.screen.DashboardScreen
 import com.jfsb.ticketsapp.features.dashboard.presentation.viewmodel.TicketsViewModel
 
@@ -16,7 +17,7 @@ fun NavGraph(
     ticketsViewModel: TicketsViewModel
 ) {
     NavHost(
-        navController = rememberNavController(),
+        navController = navHostController,
         startDestination = Routes.Dashboard.route
     ) {
         composable(Routes.Dashboard.route) {
@@ -27,6 +28,10 @@ fun NavGraph(
             )
         }
         composable(Routes.Detail.route) {}
-        composable(Routes.Create.route) {}
+        composable(Routes.Create.route) {
+            CreateTicketScreen(
+                ticketsViewModel = ticketsViewModel
+            )
+        }
     }
 }

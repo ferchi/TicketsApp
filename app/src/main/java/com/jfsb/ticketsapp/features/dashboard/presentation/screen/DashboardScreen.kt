@@ -8,9 +8,12 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -23,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.*
+import com.jfsb.ticketsapp.core.navigation.Routes
 import com.jfsb.ticketsapp.core.utils.Utils
 import com.jfsb.ticketsapp.features.dashboard.presentation.viewmodel.TicketsViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -52,7 +56,7 @@ fun DashboardScreen(
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold
                         ),
-                        textAlign = TextAlign.Center,
+                        textAlign = TextAlign.Start,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp)
@@ -60,6 +64,24 @@ fun DashboardScreen(
                 },
                 contentColor = androidx.compose.material.MaterialTheme.colors.onPrimary,
                 elevation = 0.dp,
+                actions = {
+                    IconButton(onClick = { }) {
+                        Icon(
+                            Icons.Default.Delete,
+                            contentDescription = "Icono de eliminar",
+                            tint = Color.White
+                        )
+                    }
+                    IconButton(onClick = {
+                        navController.navigate(Routes.Create.route)
+                    }) {
+                        Icon(
+                            Icons.Default.Add,
+                            contentDescription = "Icono de nuevo",
+                            tint = Color.White
+                        )
+                    }
+                }
             )
         },
     ) { contentPadding ->
@@ -68,12 +90,12 @@ fun DashboardScreen(
                 .padding(contentPadding)
                 .verticalScroll(scrollState)
         ) {
-                Tabs(
-                    pagerState = pagerState,
-                    coroutineScope = coroutineScope,
-                    ticketsViewModel = ticketsViewModel,
-                    navController = navController
-                )
+            Tabs(
+                pagerState = pagerState,
+                coroutineScope = coroutineScope,
+                ticketsViewModel = ticketsViewModel,
+                navController = navController
+            )
         }
     }
 }
