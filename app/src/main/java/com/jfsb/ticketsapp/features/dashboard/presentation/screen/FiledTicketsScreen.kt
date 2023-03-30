@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,17 +25,15 @@ import com.jfsb.ticketsapp.features.dashboard.presentation.view.TicketCardView
 
 
 @Composable
-fun TabScreen(
-    id: Int,
+fun FiledTicketsScreen(
     ticketsViewModel: TicketsViewModel,
     utils: Utils,
     navController: NavHostController
 ) {
-    ticketsViewModel.getTicketsList(id)
+    ticketsViewModel.getTicketsList(4)
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val showInfoDialog: Boolean by ticketsViewModel.showInfoDialog.observeAsState(initial = false)
-    val showFileDialog: Boolean by ticketsViewModel.showFileDialog.observeAsState(initial = false)
     val actualTicket: TicketModel by ticketsViewModel.actualTicket.observeAsState(initial = TicketModel())
 
 
@@ -46,23 +45,20 @@ fun TabScreen(
                 ticketsViewModel.setShowInfoDialog(it)
             })
 
-    if (showFileDialog)
-        FileTicketDialog(
-            ticket = actualTicket,
-            setShowDialog = {
-                ticketsViewModel.setShowFileDialog(it)
-            },
-            onClick = {
-                ticketsViewModel.fileTicket(it)
-            }
-        )
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
             .padding(horizontal = 16.dp),
     ) {
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "TICKETS ARCHIVADOS",
+            style = MaterialTheme.typography.titleMedium,
+            color = Color.Black
+        )
+
         Spacer(modifier = Modifier.height(16.dp))
 
         when (val state = ticketsViewModel.ticketsListState.value) {
@@ -85,10 +81,7 @@ fun TabScreen(
                                 ticketsViewModel.setActualTicket((state.data)[index])
                                 ticketsViewModel.setShowInfoDialog(true)
                             },
-                            deleteOnClick = {
-                                ticketsViewModel.setActualTicket((state.data)[index])
-                                ticketsViewModel.setShowFileDialog(true)
-                            }
+                            isFiled = true
                         )
                     }
                 }

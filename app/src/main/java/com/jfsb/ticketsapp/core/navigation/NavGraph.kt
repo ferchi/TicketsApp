@@ -9,12 +9,14 @@ import androidx.navigation.compose.rememberNavController
 import com.jfsb.ticketsapp.core.utils.Utils
 import com.jfsb.ticketsapp.features.dashboard.presentation.screen.CreateTicketScreen
 import com.jfsb.ticketsapp.features.dashboard.presentation.screen.DashboardScreen
+import com.jfsb.ticketsapp.features.dashboard.presentation.screen.FiledTicketsScreen
 import com.jfsb.ticketsapp.features.dashboard.presentation.viewmodel.TicketsViewModel
 
 @Composable
 fun NavGraph(
     navHostController: NavHostController,
-    ticketsViewModel: TicketsViewModel
+    ticketsViewModel: TicketsViewModel,
+    utils: Utils
 ) {
     NavHost(
         navController = navHostController,
@@ -24,10 +26,16 @@ fun NavGraph(
             DashboardScreen(
                 ticketsViewModel = ticketsViewModel,
                 navController = navHostController,
-                utils = Utils()
+                utils = utils
             )
         }
-        composable(Routes.Detail.route) {}
+        composable(Routes.FiledTickets.route) {
+            FiledTicketsScreen(
+                ticketsViewModel = ticketsViewModel,
+                utils = utils,
+                navController = navHostController
+            )
+        }
         composable(Routes.Create.route) {
             CreateTicketScreen(
                 ticketsViewModel = ticketsViewModel

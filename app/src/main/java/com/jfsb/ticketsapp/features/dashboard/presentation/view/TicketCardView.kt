@@ -2,9 +2,13 @@ package com.jfsb.ticketsapp.features.dashboard.presentation.view
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,7 +22,9 @@ fun TicketCardView(
     modifier: Modifier = Modifier,
     ticket: TicketModel,
     utils: Utils,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    deleteOnClick: () -> Unit = {},
+    isFiled: Boolean = false
 ) {
     Card(
         modifier = Modifier
@@ -29,10 +35,21 @@ fun TicketCardView(
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
     ) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.SpaceEvenly) {
-            Text(
-                text = ticket.id!!,
-                style = MaterialTheme.typography.bodySmall
-            )
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(
+                    text = ticket.id!!,
+                    style = MaterialTheme.typography.bodySmall
+                )
+                if (!isFiled) {
+                    IconButton(onClick = deleteOnClick, modifier = Modifier.size(24.dp)) {
+                        Icon(
+                            Icons.Filled.Clear,
+                            contentDescription = "File",
+                            tint = Color.White
+                        )
+                    }
+                }
+            }
             Text(
                 text = ticket.title!!,
                 style = MaterialTheme.typography.titleMedium.copy(

@@ -13,6 +13,7 @@ import com.jfsb.ticketsapp.core.network.models.Result
 import com.jfsb.ticketsapp.core.utils.Utils
 import com.jfsb.ticketsapp.features.dashboard.domain.usecase.CreateTicketUseCase
 import com.jfsb.ticketsapp.features.dashboard.domain.usecase.GetTicketsByStatusUseCase
+import com.jfsb.ticketsapp.features.dashboard.domain.usecase.UpdateTicketUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
@@ -20,7 +21,8 @@ import kotlinx.coroutines.launch
 class TicketsViewModel @Inject constructor(
     private val utils: Utils,
     private val getTicketsByStatusUseCase: GetTicketsByStatusUseCase,
-    private val createTicketUseCase: CreateTicketUseCase
+    private val createTicketUseCase: CreateTicketUseCase,
+    private val updateTicketUseCase: UpdateTicketUseCase
 ) : ViewModel() {
     val categoriesTabs = listOf(
         TabModel("Nuevos", 1),
@@ -53,6 +55,9 @@ class TicketsViewModel @Inject constructor(
     private val _isTicketAddedState = mutableStateOf<Result<Void?>>(Result.Success(null))
     val isTicketAddedState: State<Result<Void?>> = _isTicketAddedState
 
+    private val _isTicketUpdatedState = mutableStateOf<Result<Void?>>(Result.Success(null))
+    val isTicketUpdatedState: State<Result<Void?>> = _isTicketUpdatedState
+
     private val _actualTicket: MutableLiveData<TicketModel> = MutableLiveData()
     val actualTicket: LiveData<TicketModel> = _actualTicket
 
@@ -80,6 +85,9 @@ class TicketsViewModel @Inject constructor(
     private val _showInfoDialog: MutableLiveData<Boolean> = MutableLiveData()
     val showInfoDialog: LiveData<Boolean> = _showInfoDialog
 
+    private val _showFileDialog: MutableLiveData<Boolean> = MutableLiveData()
+    val showFileDialog: LiveData<Boolean> = _showFileDialog
+
     fun setTitle(title: String) {
         _title.value = title
     }
@@ -98,6 +106,10 @@ class TicketsViewModel @Inject constructor(
 
     fun setShowInfoDialog(show: Boolean) {
         _showInfoDialog.value = show
+    }
+
+    fun setShowFileDialog(show: Boolean) {
+        _showFileDialog.value = show
     }
 
     fun setSelectedTeam(position: String) {
@@ -134,6 +146,14 @@ class TicketsViewModel @Inject constructor(
         viewModelScope.launch {
             createTicketUseCase.invoke(ticket).collect { response ->
                 _isTicketAddedState.value = response
+            }
+        }
+    }
+
+    fun fileTicket(ticket: TicketModel) {
+        viewModelScope.launch {
+            updateTicketUseCase.invoke(ticket).collect { response ->
+                _isTicketUpdatedState.value = response
             }
         }
     }
