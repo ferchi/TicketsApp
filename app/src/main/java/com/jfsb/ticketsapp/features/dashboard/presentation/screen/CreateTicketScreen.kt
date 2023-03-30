@@ -103,7 +103,7 @@ fun CreateTicketScreen(
 
         Button(
             onClick = {
-                if (!ticketsViewModel.isValidateForm()) {
+                if (ticketsViewModel.isValidateForm()) {
                     ticketsViewModel.createTicket(
                         TicketModel(
                             added = Date(),

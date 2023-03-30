@@ -53,26 +53,32 @@ class TicketsViewModel @Inject constructor(
     private val _isTicketAddedState = mutableStateOf<Result<Void?>>(Result.Success(null))
     val isTicketAddedState: State<Result<Void?>> = _isTicketAddedState
 
-    private val _selectedTeam : MutableLiveData<Int> = MutableLiveData()
+    private val _actualTicket: MutableLiveData<TicketModel> = MutableLiveData()
+    val actualTicket: LiveData<TicketModel> = _actualTicket
+
+    private val _selectedTeam: MutableLiveData<Int> = MutableLiveData()
     val selectedTeam: LiveData<Int> = _selectedTeam
 
-    private val _selectedPriority : MutableLiveData<Int> = MutableLiveData()
+    private val _selectedPriority: MutableLiveData<Int> = MutableLiveData()
     val selectedPriority: LiveData<Int> = _selectedPriority
 
-    private val _selectedType : MutableLiveData<Int> = MutableLiveData()
+    private val _selectedType: MutableLiveData<Int> = MutableLiveData()
     val selectedType: LiveData<Int> = _selectedType
 
-    private val _title : MutableLiveData<String> = MutableLiveData()
+    private val _title: MutableLiveData<String> = MutableLiveData()
     val title: LiveData<String> = _title
 
-    private val _author : MutableLiveData<String> = MutableLiveData()
+    private val _author: MutableLiveData<String> = MutableLiveData()
     val author: LiveData<String> = _author
 
-    private val _description : MutableLiveData<String> = MutableLiveData()
+    private val _description: MutableLiveData<String> = MutableLiveData()
     val description: LiveData<String> = _description
 
-    private val _version : MutableLiveData<Double> = MutableLiveData()
+    private val _version: MutableLiveData<Double> = MutableLiveData()
     val version: LiveData<Double> = _version
+
+    private val _showInfoDialog: MutableLiveData<Boolean> = MutableLiveData()
+    val showInfoDialog: LiveData<Boolean> = _showInfoDialog
 
     fun setTitle(title: String) {
         _title.value = title
@@ -88,6 +94,10 @@ class TicketsViewModel @Inject constructor(
 
     fun setVersion(version: Double) {
         _version.value = version
+    }
+
+    fun setShowInfoDialog(show: Boolean) {
+        _showInfoDialog.value = show
     }
 
     fun setSelectedTeam(position: String) {
@@ -108,6 +118,10 @@ class TicketsViewModel @Inject constructor(
         }
     }
 
+    fun setActualTicket(ticket: TicketModel) {
+        _actualTicket.value = ticket
+    }
+
     fun getTicketsList(status: Int) {
         viewModelScope.launch {
             getTicketsByStatusUseCase.invoke(status).collect { response ->
@@ -125,6 +139,9 @@ class TicketsViewModel @Inject constructor(
     }
 
     fun isValidateForm(): Boolean {
-        return (_title.value != null || _title.value != "") && (_author.value != null || _author.value != "") && (_description.value != null || _description.value != "") && (_selectedPriority.value != null || _selectedPriority.value != -1)
+        return (_title.value != null && _title.value != "")
+                && (_author.value != null && _author.value != "")
+                && (_description.value != null && _description.value != "")
+                && (_selectedPriority.value != null && _selectedPriority.value != -1)
     }
 }

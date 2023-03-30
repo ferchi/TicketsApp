@@ -1,5 +1,6 @@
 package com.jfsb.ticketsapp.features.dashboard.presentation.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -7,6 +8,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,7 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.jfsb.ticketsapp.features.dashboard.presentation.viewmodel.TicketsViewModel
 import com.jfsb.ticketsapp.core.network.models.Result
+import com.jfsb.ticketsapp.core.utils.Utils
 import com.jfsb.ticketsapp.features.dashboard.data.datasource.TicketModel
+import com.jfsb.ticketsapp.features.dashboard.presentation.view.DetailsDialog
 import com.jfsb.ticketsapp.features.dashboard.presentation.view.TicketCardView
 
 
@@ -24,11 +31,23 @@ import com.jfsb.ticketsapp.features.dashboard.presentation.view.TicketCardView
 fun TabScreen(
     id: Int,
     ticketsViewModel: TicketsViewModel,
+    utils: Utils,
     navController: NavHostController
 ) {
     ticketsViewModel.getTicketsList(id)
     val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
+    val screenHeight = configuration.screenHeightDp.dp
+    val showDialog: Boolean by ticketsViewModel.showInfoDialog.observeAsState(initial = false)
+    val actualTicket: TicketModel by ticketsViewModel.actualTicket.observeAsState(initial = TicketModel())
+
+
+    if (showDialog)
+        DetailsDialog(
+            ticket = actualTicket,
+            utils = utils,
+            setShowDialog = {
+                ticketsViewModel.setShowInfoDialog(it)
+            })
 
     Column(
         modifier = Modifier
@@ -45,7 +64,7 @@ fun TabScreen(
                 }
             }
             is Result.Success<*> -> {
-                LazyColumn(Modifier.height(screenWidth)) {
+                LazyColumn(Modifier.height(screenHeight)) {
                     items((state.data as List<*>).size) { index ->
                         TicketCardView(
                             modifier = Modifier.padding(
@@ -54,6 +73,10 @@ fun TabScreen(
                             ),
                             ticket = (state.data as List<TicketModel>)[index],
                             utils = ticketsViewModel.utilsAux,
+                            onClick = {
+                                ticketsViewModel.setActualTicket((state.data)[index])
+                                ticketsViewModel.setShowInfoDialog(true)
+                            }
                         )
                     }
                 }

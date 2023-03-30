@@ -94,7 +94,8 @@ fun DashboardScreen(
                 pagerState = pagerState,
                 coroutineScope = coroutineScope,
                 ticketsViewModel = ticketsViewModel,
-                navController = navController
+                navController = navController,
+                utils = utils
             )
         }
     }
@@ -106,7 +107,8 @@ private fun Tabs(
     pagerState: PagerState,
     coroutineScope: CoroutineScope,
     ticketsViewModel: TicketsViewModel,
-    navController: NavHostController
+    navController: NavHostController,
+    utils: Utils
 ) {
     val categoriesTabs = ticketsViewModel.categoriesTabs
 
@@ -145,7 +147,8 @@ private fun Tabs(
         TabScreen(
             id = categoriesTabs[pagerState.currentPage].id,
             ticketsViewModel = ticketsViewModel,
-            navController = navController
+            navController = navController,
+            utils = utils
         )
     }
 }
