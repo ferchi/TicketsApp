@@ -18,6 +18,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.jfsb.ticketsapp.core.utils.PreferencesManager
 import com.jfsb.ticketsapp.core.utils.Utils
 import com.jfsb.ticketsapp.features.dashboard.data.datasource.TicketModel
 import com.jfsb.ticketsapp.features.dashboard.presentation.viewmodel.TicketsViewModel
@@ -42,6 +43,8 @@ fun CreateTicketScreen(
 
     val context = LocalContext.current
 
+    val username = PreferencesManager.getUserName(context)
+
     LaunchedEffect(key1 = ticket) {
         if (ticket.id != null) {
             ticketsViewModel.setTitle(ticket.title!!)
@@ -51,6 +54,9 @@ fun CreateTicketScreen(
             ticketsViewModel.setSelectedType(utils.getTypeName(ticket.type ?: 4))
             ticketsViewModel.setSelectedTeam(utils.getTeamName(ticket.team ?: 4))
             ticketsViewModel.setVersion(ticket.version ?: 0.0)
+        }
+        else {
+            ticketsViewModel.setAuthor(username!!)
         }
     }
 
@@ -71,7 +77,8 @@ fun CreateTicketScreen(
             value = author,
             onValueChange = { ticketsViewModel.setAuthor(it) },
             label = { Text("Autor*") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            enabled = false
         )
 
         OutlinedTextField(

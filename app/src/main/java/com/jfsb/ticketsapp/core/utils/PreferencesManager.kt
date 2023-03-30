@@ -22,6 +22,9 @@ object PreferencesManager {
                 editor.apply()
             }
         }
+        else{
+            return ""
+        }
         return username
     }
 

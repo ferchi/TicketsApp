@@ -1,5 +1,6 @@
 package com.jfsb.ticketsapp.features.dashboard.presentation.viewmodel
 
+import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
@@ -10,11 +11,13 @@ import com.jfsb.ticketsapp.features.dashboard.data.datasource.TicketModel
 import com.jfsb.ticketsapp.features.dashboard.data.datasource.local.TabModel
 import javax.inject.Inject
 import com.jfsb.ticketsapp.core.network.models.Result
+import com.jfsb.ticketsapp.core.utils.PreferencesManager
 import com.jfsb.ticketsapp.core.utils.Utils
 import com.jfsb.ticketsapp.features.dashboard.domain.usecase.CreateTicketUseCase
 import com.jfsb.ticketsapp.features.dashboard.domain.usecase.GetTicketsByStatusUseCase
 import com.jfsb.ticketsapp.features.dashboard.domain.usecase.UpdateTicketUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -24,6 +27,7 @@ class TicketsViewModel @Inject constructor(
     private val createTicketUseCase: CreateTicketUseCase,
     private val updateTicketUseCase: UpdateTicketUseCase
 ) : ViewModel() {
+
     val categoriesTabs = listOf(
         TabModel("Nuevos", 1),
         TabModel("En proceso", 2),
@@ -140,7 +144,6 @@ class TicketsViewModel @Inject constructor(
         _selectedPriority.value = 0
         _selectedType.value = 0
         _title.value = ""
-        _author.value = ""
         _description.value = ""
         _version.value = 0.0
     }
